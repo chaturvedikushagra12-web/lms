@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,7 +80,7 @@
           <span class="font-heading font-bold text-xl tracking-tight text-slate-900 flex items-center gap-1.5">
             LibriTrack <span class="text-xs px-2 py-0.5 rounded-full font-medium bg-brand-50 text-brand-700 border border-brand-200">School Portal</span>
           </span>
-          <p class="text-[11px] text-slate-500 hidden sm:block">Delhi Public Senior Secondary School Library</p>
+          <p class="text-[11px] text-slate-500 hidden sm:block">Stone Ridge International School Library</p>
         </div>
       </div>
 
@@ -271,7 +272,7 @@
                 <i data-lucide="school" class="w-6 h-6 text-indigo-300"></i>
               </div>
               <div>
-                <h3 class="font-heading font-bold text-base tracking-wide uppercase">Delhi Public Senior Secondary</h3>
+                <h3 class="font-heading font-bold text-base tracking-wide uppercase">Stone Ridge International School</h3>
                 <p class="text-[11px] text-slate-300 tracking-wider">OFFICIAL STUDENT LIBRARY ACCESS CARD</p>
               </div>
             </div>
@@ -721,9 +722,9 @@
         
         <button onclick="loginAs('ADMIN-1')" class="w-full p-3 rounded-2xl border border-slate-200 hover:border-brand-500 hover:bg-brand-50/40 transition flex items-center justify-between text-left group">
           <div class="flex items-center space-x-3">
-            <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs">SV</div>
+            <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs">PU</div>
             <div>
-              <p class="text-xs font-bold text-slate-800 group-hover:text-brand-600">Mrs. Sunita Verma</p>
+              <p class="text-xs font-bold text-slate-800 group-hover:text-brand-600">Pushpanjali</p>
               <p class="text-[11px] text-slate-400">Chief Librarian &bull; Staff ID #LIB-01</p>
             </div>
           </div>
@@ -1022,6 +1023,7 @@
       `;
 
       container.appendChild(toast);
+      renderLoginUsers();
       lucide.createIcons();
 
       // Trigger enter animation
@@ -1069,7 +1071,7 @@
     }
 
     function getUserDisplayName(id) {
-      if (id === 'ADMIN-1') return 'Mrs. Sunita Verma';
+      if (id === 'ADMIN-1') return 'Pushpanjali';
       const s = students.find(item => item.id === id);
       return s ? s.name : 'User';
     }
@@ -1099,9 +1101,9 @@
         addBookBtn.classList.remove('hidden');
         addBookBtn.classList.add('inline-flex');
 
-        avatarEl.textContent = "SV";
+        avatarEl.textContent = "PU";
         avatarEl.className = 'w-9 h-9 rounded-full bg-gradient-to-br from-amber-500 to-rose-600 text-white font-bold text-xs flex items-center justify-center shadow-inner';
-        nameEl.textContent = "Mrs. Sunita Verma";
+        nameEl.textContent = "Pushpanjali";
         descEl.textContent = "Chief Librarian (Admin)";
       }
 
@@ -2052,13 +2054,14 @@
 function openAddStudentModal(){document.getElementById("student-modal-title").textContent="Add Student";document.getElementById("student-form").reset();document.getElementById("student-form-id").value="";document.getElementById("student-modal").classList.remove("hidden");}
 function openEditStudentModal(studentId){const s=students.find(x=>x.id===studentId);if(!s)return;document.getElementById("student-modal-title").textContent="Edit Student";document.getElementById("student-form-id").value=s.id;document.getElementById("student-form-name").value=s.name;document.getElementById("student-form-roll").value=s.rollNumber;document.getElementById("student-form-grade").value=s.grade;document.getElementById("student-form-email").value=s.email;document.getElementById("student-modal").classList.remove("hidden");}
 function closeStudentModal(){document.getElementById("student-modal").classList.add("hidden");}
-function handleStudentSubmit(e){e.preventDefault();const id=document.getElementById("student-form-id").value;const name=document.getElementById("student-form-name").value.trim();const rollNumber=document.getElementById("student-form-roll").value.trim();const grade=document.getElementById("student-form-grade").value.trim();const email=document.getElementById("student-form-email").value.trim();const initials=name.split(' ').map(v=>v[0]).join('').substring(0,2).toUpperCase();if(id){const i=students.findIndex(s=>s.id===id);students[i]={...students[i],name,rollNumber,grade,email,initials};}else{students.push({id:`STU-${Date.now()}`,name,rollNumber,grade,email,initials,status:'Active'});}saveData();closeStudentModal();renderStudentsDirectory();populateQuickIssueDropdowns();showToast('Student saved successfully','success');}
-function deleteStudent(studentId){if(loans.some(l=>l.studentId===studentId&&!l.returnDate)){showToast('Cannot delete student with active loans.','error');return;}students=students.filter(s=>s.id!==studentId);saveData();renderStudentsDirectory();populateQuickIssueDropdowns();showToast('Student removed successfully.','info');}
+function handleStudentSubmit(e){e.preventDefault();const id=document.getElementById("student-form-id").value;const name=document.getElementById("student-form-name").value.trim();const rollNumber=document.getElementById("student-form-roll").value.trim();const grade=document.getElementById("student-form-grade").value.trim();const email=document.getElementById("student-form-email").value.trim();const initials=name.split(' ').map(v=>v[0]).join('').substring(0,2).toUpperCase();if(id){const i=students.findIndex(s=>s.id===id);students[i]={...students[i],name,rollNumber,grade,email,initials};}else{students.push({id:`STU-${Date.now()}`,name,rollNumber,grade,email,initials,status:'Active'});}saveData();closeStudentModal();renderStudentsDirectory();populateQuickIssueDropdowns();renderLoginUsers();showToast('Student saved successfully','success');}
+function deleteStudent(studentId){if(loans.some(l=>l.studentId===studentId&&!l.returnDate)){showToast('Cannot delete student with active loans.','error');return;}students=students.filter(s=>s.id!==studentId);saveData();renderStudentsDirectory();populateQuickIssueDropdowns();renderLoginUsers();showToast('Student removed successfully.','info');}
 
 /* -------------------------------------------------------------
        LOGIN MODAL CONTROLS
        ------------------------------------------------------------- */
-    function openLoginModal() {
+    function renderLoginUsers(){const c=document.querySelector("#login-modal .mt-6.space-y-3");if(!c)return;let h=`<div class="text-left text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Student Logins</div>`;students.forEach(s=>{h+=`<button onclick="loginAs('${s.id}')" class="w-full p-3 rounded-2xl border border-slate-200 hover:border-brand-500 hover:bg-brand-50/40 transition flex items-center justify-between text-left group"><div class="flex items-center space-x-3"><div class="w-9 h-9 rounded-xl bg-indigo-100 text-brand-700 flex items-center justify-center font-bold text-xs">${s.initials}</div><div><p class="text-xs font-bold text-slate-800">${s.name}</p><p class="text-[11px] text-slate-400">${s.rollNumber}</p></div></div><span>&rarr;</span></button>`});h+=`<div class="text-left text-[11px] font-semibold text-slate-400 uppercase tracking-wider pt-2">Library Administration</div><button onclick="loginAs('ADMIN-1')" class="w-full p-3 rounded-2xl border border-slate-200"><div class="flex items-center space-x-3"><div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs">PU</div><div><p class="text-xs font-bold text-slate-800">Pushpanjali</p><p class="text-[11px] text-slate-400">Chief Librarian</p></div></div></button>`;c.innerHTML=h;}
+function openLoginModal() {
       document.getElementById('login-modal').classList.remove('hidden');
     }
 
